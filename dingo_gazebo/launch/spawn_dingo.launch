@@ -22,10 +22,10 @@
   </include>
 
   <group if="$(optenv DINGO_OMNI 0)">
-    <rosparam command="load" file="$(find dingo_gazebo)/config/gains_omni.yaml" />
+    <rosparam command="load" file="$(dirname)/../config/gains_omni.yaml" />
   </group>
   <group unless="$(optenv DINGO_OMNI 0)">
-    <rosparam command="load" file="$(find dingo_gazebo)/config/gains_diff.yaml" />
+    <rosparam command="load" file="$(dirname)/../config/gains_diff.yaml" />
   </group>
 
   <!-- Spawn dingo -->
