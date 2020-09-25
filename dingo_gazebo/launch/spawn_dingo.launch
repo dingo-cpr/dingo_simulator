@@ -31,12 +31,4 @@
   <!-- Spawn dingo -->
   <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
 	      args="-urdf -model dingo -param robot_description -x $(arg x) -y $(arg y) -z $(arg z) -Y $(arg yaw)" />
-
-  <!--
-    Launch any accessory nodes that would normally be part of dingo_bringup on a physical robot.
-    This doesn't include sensors that would be simulated, but can include additional services
-  -->
-  <group if="$(optenv DINGO_REALSENSE 0)">
-    <include file="$(dirname)/accessories/intel_realsense.launch" />
-  </group>
 </launch>
