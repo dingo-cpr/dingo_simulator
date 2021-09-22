@@ -61,7 +61,7 @@ def generate_launch_description():
 	# Specify the actions
 	description_cmd = IncludeLaunchDescription(
 		PythonLaunchDescriptionSource(description_path),
-		launch_arguments={'config' : config}.items()
+		launch_arguments={'config' : config, 'physical_robot' : 'false'}.items()
 	)
 
 	start_gazebo_ros_spawner_cmd = 	Node(
@@ -78,7 +78,8 @@ def generate_launch_description():
 
 	start_dingo_control = IncludeLaunchDescription(
 		PythonLaunchDescriptionSource(os.path.join(
-			get_package_share_directory('dingo_control'), 'launch', 'control.launch.py'))
+			get_package_share_directory('dingo_control'), 'launch', 'control.launch.py')),
+		launch_arguments={'physical_robot' : 'false'}.items()
 	)
 
 	spawn_velocity_controller = ExecuteProcess(
