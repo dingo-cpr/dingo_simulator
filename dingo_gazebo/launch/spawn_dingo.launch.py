@@ -76,24 +76,6 @@ def generate_launch_description():
 		output='screen',
 	)
 
-	start_dingo_control = IncludeLaunchDescription(
-		PythonLaunchDescriptionSource(os.path.join(
-			get_package_share_directory('dingo_control'), 'launch', 'control.launch.py')),
-		launch_arguments={'physical_robot' : 'false'}.items()
-	)
-
-	spawn_velocity_controller = ExecuteProcess(
-		cmd=['ros2', 'control', 'load_controller', '--set-state', 'start',
-			'simulation_velocity_controller'],
-		output='screen'
-	)
-
-	load_joint_trajectory_controller = ExecuteProcess(
-		cmd=['ros2', 'control', 'load_controller', '--set-state', 'start',
-			'joint_trajectory_controller'],
-		output='screen'
-	)
-
 	ld = LaunchDescription()
 
 	# Declare the launch options
@@ -107,7 +89,5 @@ def generate_launch_description():
 	# Add any conditioned actions
 	ld.add_action(description_cmd)
 	ld.add_action(start_gazebo_ros_spawner_cmd)
-	ld.add_action(start_dingo_control)
-	ld.add_action(spawn_velocity_controller)
 
 	return ld
