@@ -13,7 +13,7 @@
   <!-- <exec_depend>dingo_control</exec_depend> -->
   <exec_depend>dingo_description</exec_depend>
   <exec_depend>gazebo_ros_pkgs</exec_depend>
-  <!-- <exec_depend>gazebo_ros2_control</exec_depend> -->
+  <exec_depend>gazebo_ros2_control</exec_depend>
 
   <export>
     <!-- <gazebo_ros gazebo_media_path="${prefix}"/> -->
