@@ -31,7 +31,4 @@ In order to use the simulation to its fullest potential, you will need to run tw
 ```
 ros2 launch dingo_gazebo dingo_world.launch.py
 ```
-Wait for Gazebo to fully start. It takes the velodyne plugin 30/60 seconds to start. Once Gazebo is started and you can see the robot launch the next file.
-```
-ros2 launch dingo_gazebo start_dingo_controls.launch.py
-```
+Wait for Gazebo to fully start. It takes 20 seconds for the ros2 controls to start (it uses a launch delay).
