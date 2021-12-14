@@ -16,14 +16,16 @@ import os
 
 from launch import LaunchDescription
 from launch.substitutions import LaunchConfiguration
-from launch.actions import DeclareLaunchArgument, ExecuteProcess, IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, TimerAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
-	description_path = os.path.join(get_package_share_directory('dingo_description'), 'launch', 'description.launch.py')
-
+	description_path = os.path.join(
+		get_package_share_directory('dingo_description'), 'launch', 'description.launch.py')
+	dingo_controls_path = os.path.join(
+		get_package_share_directory('dingo_gazebo'), 'launch', 'start_dingo_controls.launch.py')
 	# Launch configuration variables specific to simulation
 	x_pose = LaunchConfiguration('x_pose')
 	y_pose = LaunchConfiguration('y_pose')
@@ -76,6 +78,15 @@ def generate_launch_description():
 		output='screen',
 	)
 
+	delayed_dingo_controls_cmd = TimerAction(
+		period=20.0,
+		actions=[
+			IncludeLaunchDescription(
+				PythonLaunchDescriptionSource(dingo_controls_path)
+			)			
+		]
+	)
+
 	ld = LaunchDescription()
 
 	# Declare the launch options
@@ -89,5 +100,6 @@ def generate_launch_description():
 	# Add any conditioned actions
 	ld.add_action(description_cmd)
 	ld.add_action(start_gazebo_ros_spawner_cmd)
+	ld.add_action(delayed_dingo_controls_cmd)
 
 	return ld
