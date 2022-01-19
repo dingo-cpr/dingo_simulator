@@ -2,8 +2,8 @@
 Changelog for package dingo_gazebo
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.1 (2022-01-18)
+------------------
 * Remove the realsense-to-laser node, as it's been axed from the core robot_bringup too
 * Add an accessories folder for launching additional nodes that would be part of the bringup on a real robot.  Currently populated with the corresponding realsense nodes from dingo_robot
 * Enable passing the config argument to dingo_description
