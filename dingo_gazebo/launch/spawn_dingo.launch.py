@@ -16,9 +16,12 @@ import os
 
 from launch import LaunchDescription
 from launch.substitutions import LaunchConfiguration
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, TimerAction
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, RegisterEventHandler
+from launch.event_handlers import OnProcessExit
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
+from launch.launch_context import LaunchContext
+from nav2_common.launch import RewrittenYaml
 from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
@@ -32,6 +35,7 @@ def generate_launch_description():
 	z_pose = LaunchConfiguration('z_pose')
 	yaw = LaunchConfiguration('yaw')
 	config = LaunchConfiguration('config')
+	use_sim_time = LaunchConfiguration('use_sim_time')
 
 	# Declare the launch arguments
 	declare_use_sim_time_cmd = DeclareLaunchArgument(
@@ -60,10 +64,28 @@ def generate_launch_description():
 		default_value=os.getenv('DINGO_CONFIG', 'base'),
 		description='get the dingo configuration')
 
+	dingo_control_directory = get_package_share_directory('dingo_control')
+
+	if os.getenv('DINGO_OMNI', 0):
+		control_yaml = os.path.join(dingo_control_directory, 'config', 'control_omni.yaml')
+	else:
+		control_yaml = os.path.join(dingo_control_directory, 'config', 'control_diff.yaml')
+
+	# Rewrite config file
+	param_substitutions = {
+		'use_sim_time': use_sim_time,
+	}
+
+	rewritten_control_yaml = RewrittenYaml(
+		source_file=control_yaml,
+		root_key='',
+		param_rewrites=param_substitutions,
+		convert_types=True)
+
 	# Specify the actions
 	description_cmd = IncludeLaunchDescription(
 		PythonLaunchDescriptionSource(description_path),
-		launch_arguments={'config' : config, 'physical_robot' : 'false'}.items()
+		launch_arguments={'config' : config, 'physical_robot' : 'false', 'control_yaml_file' : rewritten_control_yaml}.items()
 	)
 
 	start_gazebo_ros_spawner_cmd = 	Node(
@@ -78,13 +100,15 @@ def generate_launch_description():
 		output='screen',
 	)
 
-	delayed_dingo_controls_cmd = TimerAction(
-		period=20.0,
-		actions=[
-			IncludeLaunchDescription(
-				PythonLaunchDescriptionSource(dingo_controls_path)
-			)			
-		]
+	delayed_dingo_controls_cmd = RegisterEventHandler(
+		event_handler=OnProcessExit(
+			target_action=start_gazebo_ros_spawner_cmd,
+			on_exit=[
+				IncludeLaunchDescription(
+					PythonLaunchDescriptionSource(dingo_controls_path)
+				)			
+			]
+		)
 	)
 
 	ld = LaunchDescription()
