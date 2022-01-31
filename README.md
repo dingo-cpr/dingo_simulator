@@ -22,7 +22,7 @@ In order to use the simulation, you will need to run the following launch file.
 ```
 ros2 launch dingo_gazebo dingo_world.launch.py
 ```
-Wait for Gazebo to fully start. 
-ros2_control takes a while to start.
-It will not start until the gazebo_ros spawner is finished.
+Wait for Gazebo to fully start.
 The Velodyne simulator can take up to 30 seconds to start, meaning the gazebo_ros spawner will take that long.
+As a result, ros2_control is delayed by about 20 seconds.
+This will ensure that the controllers don't time out while waiting to connect to the server started in the urdf.

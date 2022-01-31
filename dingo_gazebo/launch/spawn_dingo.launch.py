@@ -16,8 +16,7 @@ import os
 
 from launch import LaunchDescription
 from launch.substitutions import LaunchConfiguration
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, RegisterEventHandler
-from launch.event_handlers import OnProcessExit
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, TimerAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 from nav2_common.launch import RewrittenYaml
@@ -99,15 +98,13 @@ def generate_launch_description():
 		output='screen',
 	)
 
-	delayed_dingo_controls_cmd = RegisterEventHandler(
-		event_handler=OnProcessExit(
-			target_action=start_gazebo_ros_spawner_cmd,
-			on_exit=[
-				IncludeLaunchDescription(
-					PythonLaunchDescriptionSource(dingo_controls_path)
-				)			
-			]
-		)
+	delayed_dingo_controls_cmd = TimerAction(
+		period=20.0,
+		actions=[
+			IncludeLaunchDescription(
+				PythonLaunchDescriptionSource(dingo_controls_path)
+			)			
+		]
 	)
 
 	ld = LaunchDescription()
