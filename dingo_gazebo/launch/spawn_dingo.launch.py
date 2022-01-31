@@ -20,7 +20,6 @@ from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, Regi
 from launch.event_handlers import OnProcessExit
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
-from launch.launch_context import LaunchContext
 from nav2_common.launch import RewrittenYaml
 from ament_index_python.packages import get_package_share_directory
 
