@@ -1,15 +1,23 @@
-cmake_minimum_required(VERSION 2.8.3)
+################################################################################
+# Set minimum required version of cmake, project name and compile options
+################################################################################
+cmake_minimum_required(VERSION 3.5)
 project(dingo_gazebo)
 
-find_package(catkin REQUIRED)
+################################################################################
+# Find ament packages and libraries for ament and system dependencies
+################################################################################
+find_package(ament_cmake REQUIRED)
 
-catkin_package()
-
-install(DIRECTORY config launch worlds
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+################################################################################
+# Install
+################################################################################
+install(
+  DIRECTORY launch worlds
+  DESTINATION share/${PROJECT_NAME}
 )
 
-if(CATKIN_ENABLE_TESTING)
-  find_package(roslaunch REQUIRED)
-  roslaunch_add_file_check(launch/dingo_world.launch)
-endif()
+################################################################################
+# Macro for ament package
+################################################################################
+ament_package()
