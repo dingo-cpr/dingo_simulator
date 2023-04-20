@@ -2,8 +2,8 @@
 Changelog for package dingo_simulator
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.2 (2023-04-20)
+------------------
 * Bump CMake version to avoid CMP0048 warning.
 * Contributors: Tony Baltovski
 
