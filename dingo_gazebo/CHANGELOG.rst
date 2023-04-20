@@ -2,6 +2,11 @@
 Changelog for package dingo_gazebo
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Bump CMake version to avoid CMP0048 warning.
+* Contributors: Tony Baltovski
+
 0.1.1 (2022-01-18)
 ------------------
 * Remove the realsense-to-laser node, as it's been axed from the core robot_bringup too
